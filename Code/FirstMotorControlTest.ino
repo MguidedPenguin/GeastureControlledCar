@@ -1,68 +1,80 @@
-const int EnA = 27;
-const int In1 = 26;
-const int In2 = 14;
-const int EnB = 25;
-const int In3 = 32;
-const int In4 = 33;
+//Driver 1
+const int M1_EN = 25; const int M1_IN1 = 27; const int M1_IN2 = 26;
+const int M2_EN = 33; const int M2_IN1 = 32; const int M2_IN2 = 14;
 
-const int PWMFrequecy = 5000;
+//Driver 2
+const int M3_EN = 19; const int M3_IN1 = 18; const int M3_IN2 = 5;
+const int M4_EN = 17; const int M4_IN1 = 16; const int M4_IN2 = 4;
+
+const int PWMFrequency = 5000;
 const int PWMResolution = 8;
 
 void moveForward(int speed){
-  digitalWrite(In1, HIGH);
-  digitalWrite(In2, LOW);
-  digitalWrite(In3, HIGH);
-  digitalWrite(In4, LOW);
-  ledcWrite(EnA, speed);
-  ledcWrite(EnB, speed);
+  digitalWrite(M1_IN1,HIGH); digitalWrite(M1_IN2, LOW);
+  digitalWrite(M2_IN1, HIGH); digitalWrite(M2_IN2, LOW);
+  digitalWrite(M3_IN1, HIGH); digitalWrite(M3_IN2, LOW);
+  digitalWrite(M4_IN1, HIGH); digitalWrite(M4_IN2, LOW);
 
-  Serial.println("Moving Forwards ");
+  ledcWrite(M1_EN, speed);
+  ledcWrite(M2_EN, speed);
+  ledcWrite(M3_EN, speed);
+  ledcWrite(M4_EN, speed);
+
+  Serial.println("Moving Forward");
 }
 
-void moveBackward(int speed){
-  digitalWrite(In1, LOW);
-  digitalWrite(In2, HIGH);
-  digitalWrite(In3, LOW);
-  digitalWrite(In4, HIGH);
-  ledcWrite(EnA, speed);
-  ledcWrite(EnB, speed);
+void moveBackward(int speed) {
+  digitalWrite(M1_IN1, LOW); digitalWrite(M1_IN2, HIGH);
+  digitalWrite(M2_IN1, LOW); digitalWrite(M2_IN2, HIGH);
+  digitalWrite(M3_IN1, LOW); digitalWrite(M3_IN2, HIGH);
+  digitalWrite(M4_IN1, LOW); digitalWrite(M4_IN2, HIGH);
 
-  Serial.println("Moving Backwards ");
+  ledcWrite(M1_EN, speed);
+  ledcWrite(M2_EN, speed);
+  ledcWrite(M3_EN, speed);
+  ledcWrite(M4_EN, speed);
+
+  Serial.println("Moving Backward");
 }
 
-void Stop(){
-  digitalWrite(In1, LOW);
-  digitalWrite(In2, LOW);
-  digitalWrite(In3, LOW);
-  digitalWrite(In4, LOW);
-  ledcWrite(EnA, 0);
-  ledcWrite(EnB, 0);
+void stopMotors() {
+  digitalWrite(M1_IN1, LOW); digitalWrite(M1_IN2, LOW);
+  digitalWrite(M2_IN1, LOW); digitalWrite(M2_IN2, LOW);
+  digitalWrite(M3_IN1, LOW); digitalWrite(M3_IN2, LOW);
+  digitalWrite(M4_IN1, LOW); digitalWrite(M4_IN2, LOW);
 
-  Serial.println("Stoped Moving ");
+  ledcWrite(M1_EN, 0);
+  ledcWrite(M2_EN, 0);
+  ledcWrite(M3_EN, 0);
+  ledcWrite(M4_EN, 0);
+
+  Serial.println("Stopped");
 }
 
-void setup() {
+void setup(){
   Serial.begin(115200);
-  pinMode(In1, OUTPUT);
-  pinMode(In2, OUTPUT);
-  pinMode(In3, OUTPUT);
-  pinMode(In4, OUTPUT);
 
-  ledcAttach(EnA, PWMFrequecy, PWMResolution);
-  ledcAttach(EnB, PWMFrequecy, PWMResolution);
+  pinMode(M1_IN1, OUTPUT); pinMode(M1_IN2, OUTPUT);
+  pinMode(M2_IN1, OUTPUT); pinMode(M2_IN2, OUTPUT);
+  pinMode(M3_IN1, OUTPUT); pinMode(M3_IN2, OUTPUT);
+  pinMode(M4_IN1, OUTPUT); pinMode(M4_IN2, OUTPUT);
+
+  ledcAttach(M1_EN, PWMFrequency, PWMResolution);
+  ledcAttach(M2_EN, PWMFrequency, PWMResolution);
+  ledcAttach(M3_EN, PWMFrequency, PWMResolution);
+  ledcAttach(M4_EN, PWMFrequency, PWMResolution);
 }
 
 void loop() {
   moveForward(200);
   delay(2000);
 
-  Stop();
+  stopMotors();
   delay(2000);
 
   moveBackward(200);
   delay(2000);
 
-  Stop();
+  stopMotors();
   delay(2000);
-  }
-
+}
